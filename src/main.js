@@ -10,6 +10,7 @@ import 'element-ui/lib/theme-chalk/index.css';
 
 // 导入组件
 import Login from "./pages/Login.vue";
+import Admin from "./pages/Admin.vue";
 
 // element: 2. 注册element插件
 Vue.use(ElementUI);
@@ -19,6 +20,7 @@ Vue.use(VueRouter);
 
 // 配置路由
 const routes = [
+  { path:"/",component: Admin },
   { path:"/login",component: Login }
 ];
 
