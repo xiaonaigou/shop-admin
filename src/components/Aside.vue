@@ -1,7 +1,8 @@
 <template>
 <!-- 菜单栏组件 -->
     <!-- default-active 默认选中选项
-    active-text-color 高亮时颜色 -->
+    active-text-color 高亮时颜色
+    collapse 默认是false展开菜单,true收起菜单 -->
     <el-menu
       :collapse="isCollapse"
       default-active="1"
@@ -11,7 +12,7 @@
       active-text-color="#ffd04b">
 
       <!-- 子菜单 -->
-      <el-submenu index="1">
+      <el-submenu index="1-1">
           <!-- slot指定模板中数据,此处暂时不使用 -->
         <template slot="title">
           <i class="el-icon-menu"></i>
@@ -19,11 +20,15 @@
         </template>
 
         <el-menu-item index="1-1">
-          <template slot="title">商品管理</template>
+          <template slot="title">
+            <router-link to="/admin/goods-list">商品管理</router-link>
+          </template>
         </el-menu-item>
 
         <el-menu-item index="1-2">
-          <template slot="title">栏目管理</template>
+          <template slot="title">
+            <router-link to="/admin/category-list">栏目管理</router-link>
+          </template>
         </el-menu-item>
 
       </el-submenu>
@@ -42,6 +47,13 @@ export default {
 .el-menu-vertical-demo{
     height: 100%;
 }
+
+/* 设置a标签颜色继承 */
+.el-menu-vertical-demo a{
+    color: inherit;
+    text-decoration: none;
+}
+
 /* not 除了.el-menu 自身以外 */
 .el-menu-vertical-demo:not(.el-menu--collapse) {
     width: 200px;
