@@ -4,7 +4,7 @@
             <!-- 按钮列表 -->
             <div>
                 <el-button>新增</el-button>
-                <el-button type="danger">批量删除</el-button>
+                <el-button type="danger" @click="handleDeleteMultiple">批量删除</el-button>
             </div>
 
             <!-- 搜索输入框 -->
@@ -58,9 +58,12 @@
 
         <!-- 显示数据的简写方式,
         指定prop属性自动读取每一项数据的prop值的属性 -->
-        <el-table-column
+        <!-- 暂时替换成id,方便页面查看效果
         prop="categoryname"
-        label="类型"
+        label="类型" -->
+        <el-table-column
+        prop="id"
+        label="id"
         width="120">
         </el-table-column>
 
@@ -112,25 +115,13 @@ export default {
     data() {
       return {
          tableData: [
-            // {
-            //     id: 103,        
-            //     title: "骆驼男装2017秋季新款运动休闲纯色夹克青年宽松长袖针织开衫卫",
-            //     is_top: 1,
-            //     is_hot: 1,
-            //     is_slide: 1,      
-            //     categoryname: "男装",
-            //     img_url: "/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg",
-            //     imgurl:"http://139.199.192.48:6060/imgs/SJ4EgwosX0wTqvyAvhtFGT1w.jpg",
-            //     goods_no: "NZ0000000002",
-            //     stock_quantity: 200,
-            //     market_price: 1000,
-            //     sell_price: 800   
-            // }
+            
         ],
         pageSize:5,
         pageIndex:1,
         total:0,
-        searchValue:""
+        searchValue:"",
+        multipleSelection:[]
       }
     },
     
@@ -138,6 +129,7 @@ export default {
         // 选择任一项时就触发
         handleSelectionChange(val) {
             this.multipleSelection = val;
+            // 保存到选中的商品
         },
 
         // 编辑商品
@@ -147,7 +139,47 @@ export default {
 
         // 删除商品
         handleDelete(goods){
-            console.log(goods);
+            const id = goods.id;
+
+            // 删除单个和多个是不是都可以通过ids?
+
+            //调用删除商品的接口
+            this.$axios({
+                method:"GET",
+                url: `http://localhost:8899/admin/goods/del/${id}`
+            }).then(res=>{
+                const { message,status } = res.data;
+                // 删除成功
+                if( status===0 ){
+                    this.$message.success(message);
+                    // 刷新
+                    this.getList();
+                }else
+                this.$message.error(message);
+            })
+        },
+        // 删除多个
+        handleDeleteMultiple(){
+            // 获取到id
+            const arr = this.multipleSelection.map(v=>{
+                return v.id;
+            });
+            const ids = arr.join(",");
+
+             //调用删除商品的接口
+            this.$axios({
+                method:"GET",
+                url: `http://localhost:8899/admin/goods/del/${ids}`
+            }).then(res=>{
+                const { message,status } = res.data;
+                // 删除成功
+                if( status===0 ){
+                    this.$message.success(message);
+                    // 刷新
+                    this.getList();
+                }else
+                this.$message.error(message);
+            })
         },
 
         //搜索
