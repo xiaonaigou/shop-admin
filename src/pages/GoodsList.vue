@@ -3,7 +3,7 @@
         <el-row type="flex" justify="space-between">
             <!-- 按钮列表 -->
             <div>
-                <el-button>新增</el-button>
+                <el-button @click="handleGoodsAdd">新增</el-button>
                 <el-button type="danger" @click="handleDeleteMultiple">批量删除</el-button>
             </div>
 
@@ -134,7 +134,8 @@ export default {
 
         // 编辑商品
         handleEdit(goods){
-            console.log(goods);
+            // 跳转时带上商品id
+             this.$router.push("/admin/goods-edit/" + goods.id);
         },
 
         // 删除商品
@@ -208,6 +209,11 @@ export default {
                     // 总条数
                     this.total = res.data.totalcount
             })
+        },
+
+        //新增商品
+        handleGoodsAdd(){
+            this.$router.push("/admin/goods-add");
         }
     },
     mounted(){
@@ -232,5 +238,13 @@ export default {
 
   .input-search{
       width:200px;
+  }
+
+  .goods-img{
+      width: 60px;
+      height: 60px;
+      /* 元素压缩的倍数,0表示不会被挤压 */
+      flex-shrink: 0;
+      margin-right:5px;
   }
 </style>
