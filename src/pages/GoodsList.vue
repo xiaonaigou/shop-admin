@@ -144,19 +144,7 @@ export default {
             // 删除单个和多个是不是都可以通过ids?
 
             //调用删除商品的接口
-            this.$axios({
-                method:"GET",
-                url: `http://localhost:8899/admin/goods/del/${id}`
-            }).then(res=>{
-                const { message,status } = res.data;
-                // 删除成功
-                if( status===0 ){
-                    this.$message.success(message);
-                    // 刷新
-                    this.getList();
-                }else
-                this.$message.error(message);
-            })
+            this.getDeleteList(id)
         },
         // 删除多个
         handleDeleteMultiple(){
@@ -167,9 +155,13 @@ export default {
             const ids = arr.join(",");
 
              //调用删除商品的接口
+            this.getDeleteList(ids)
+        },
+        // 删除的封装
+        getDeleteList(param){
             this.$axios({
                 method:"GET",
-                url: `http://localhost:8899/admin/goods/del/${ids}`
+                url: `http://localhost:8899/admin/goods/del/${param}`
             }).then(res=>{
                 const { message,status } = res.data;
                 // 删除成功
