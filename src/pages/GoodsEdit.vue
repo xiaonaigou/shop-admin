@@ -70,6 +70,7 @@
         <el-upload
         action="http://localhost:8899/admin/article/uploadimg"
         list-type="picture-card"
+        :file-list="form.fileList"
         :on-success="handleCartSuccess"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove">
@@ -169,23 +170,26 @@ import { quillEditor } from 'vue-quill-editor'
     },
     methods: {
       onSubmit() {
+
+        // 获取动态参数id
+        const {id} = this.$route.params;
+
         // console.log('submit!');
         // 提交到添加商品的接口
         this.$axios({
             method:"POST",
-            url:"http://localhost:8899/admin/goods/add/goods",
+            url:"http://localhost:8899/admin/goods/edit/" + id,
             data:this.form,
             // 处理session跨域
             withCredentials:true
         }).then(res=>{
             const {message,status} = res.data;
-            // console.log(message);
             if(status===0){
                 this.$message.success(message)
                 //返回上一页
                 this.$router.back()
             }else{
-                this.$router,push("/login")
+                this.$router.push("/")
             }
         })
       },
@@ -231,10 +235,11 @@ import { quillEditor } from 'vue-quill-editor'
       handleCartSuccess(res,file,fileList){
         // console.log(fileList);
         // 把fileList数组中每一项response属性提取出来
-        const files = fileList.map(v=>{
-            return v.response;
-        });
-        thid.form.List = files;
+        // const files = fileList.map(v=>{
+        //     return v.response;
+        // });
+        // this.form.List = files;
+        this.form.fileList.push(file.response);
       }
     },
     mounted(){
@@ -262,12 +267,17 @@ import { quillEditor } from 'vue-quill-editor'
                 ...message,
                 // category_id转化为数字
                 category_id: + message.category_id,
+                // 修改图片的预览地址
+                fileList:message.fileList.map(v=>{
+                  return {
+                    ...v,
+                    url:`http://localhost:8899${v.shorturl}`
+                  }
+                })
             }
 
             // imageUrl封面预览
             this.imageUrl = message.imgList[0].url;
-
-            // 图片相册暂留
         })
     }
   }

@@ -186,7 +186,7 @@ import { quillEditor } from 'vue-quill-editor'
                 //返回上一页
                 this.$router.back()
             }else{
-                this.$router,push("/login")
+                this.$router.push("/login")
             }
         })
       },

@@ -66,6 +66,46 @@ const routes = [
 // 路由实例
 const router = new VueRouter({ routes });
 
+// 权限管理
+// to: 去哪个页面
+// from: 页面来源
+// next: 接收参数是url,并且可以跳转到该url
+// next()方法必须调用
+router.beforeEach((to,from,next)=>{
+  // 判断是否登录
+  axios({
+    method:"GET",
+    url:"http://localhost:8899/admin/account/islogin",
+    // 处理session跨域
+    withCredentials: true
+  }).then(res=>{
+    const {code} = res.data;
+    // 访问登录页
+    if(to.path === "/login"){
+
+      // 已登录
+      if(code === "logined"){
+        next("/admin/goods-list")
+      }else{
+        // 未登录
+        next();
+      }
+
+    }else{
+      // 访问未登录页
+
+      // 已登录
+      if(code === "logined"){
+        next();
+      }else{
+        // 未登录
+        next("/login");
+      }
+    }
+  })
+  // console.log(to,from);
+});
+
 Vue.config.productionTip = false;
 
 //绑定到原型
