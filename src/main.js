@@ -16,6 +16,10 @@ import CategoryList from "./pages/CategoryList.vue";
 import GoodsAdd from "./pages/GoodsAdd.vue";
 import GoodsEdit from "./pages/GoodsEdit.vue";
 
+// 导入vuex的store
+// import store from "/store/index.js";  下面默认简写
+import store from "./store";
+
 // element: 2. 注册element插件
 Vue.use(ElementUI);
 
@@ -114,5 +118,8 @@ Vue.prototype.$axios = axios;
 new Vue({
   render: h => h(App),
   // 挂载路由
-  router
+  router,
+
+  // 仓库对象
+  store,
 }).$mount('#app') //$mount绑定控制区域,相当于el

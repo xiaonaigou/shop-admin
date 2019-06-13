@@ -7,7 +7,7 @@
         <el-form class="form" ref="form" :model="form" :rules="rules" label-width="80px">
             
         <el-form-item label="账号">
-            <el-input v-model="form.username" prop="username"></el-input>
+            <el-input v-model="form.username" prop="username" ></el-input>
         </el-form-item>
 
         <el-form-item label="密码">
@@ -15,7 +15,7 @@
         </el-form-item>
         
         <el-form-item class="login">
-            <el-button type="primary" @click="onSubmit">登录</el-button>
+            <el-button type="primary" @click="onSubmit" >登录</el-button>
             <el-button>取消</el-button>
         </el-form-item>
         </el-form>
@@ -66,6 +66,11 @@
                 }).then(res=>{
                     // 解构赋值
                     const { message, status } = res.data;
+
+                    // $store下的方法commit设置仓库的数据
+                    // commit方法调用仓库中mutations的方法，第一个参数是方法名
+                    // 第二个参数就是传递的数据对象
+                    this.$store.commit("setUser",message);
 
                     // 登录成功
                     if( status===0 ){
