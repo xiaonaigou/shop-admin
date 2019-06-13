@@ -218,13 +218,13 @@ import { quillEditor } from 'vue-quill-editor'
 
       // 删除多张图片事件
       handleRemove(file, fileList) {
-        // console.log(file, fileList);
+        // console.log(fileList);
         // 把删除之后的列表赋值给this.form.fileList
-        const files = fileList.map(v=>{
-            return v.response;
-        });
+        // const files = fileList.map(v=>{
+        //     return v.response;
+        // });
         
-        this.form.fileList = files;
+        this.form.fileList = fileList;
       },
       // 预览
       handlePictureCardPreview(file) {

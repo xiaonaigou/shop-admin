@@ -46,7 +46,8 @@ export default {
     },
 
     methods: {
-        handleBlur(data){
+        handleBlur(event,data){
+            // console.log(data);
             // 如果修改的值没变化--return
             if(data.sort_id == event.target.value) { 
                 return;
